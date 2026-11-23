@@ -1,7 +1,7 @@
-fastapi>=0.163
-uvicorn[standard]>=0.54
-numpy>=2.5
-pydantic>=2.14
-httpx>=0.28
-httpx2
-pytest>=9
+fastapi==0.165.0
+uvicorn[standard]==0.54.0
+numpy==2.5.5
+pydantic==2.14.4
+httpx==0.28.1
+httpx2==2.16.2
+pytest==9.2.0
