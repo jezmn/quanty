@@ -1,0 +1,229 @@
+
+    <section x-show="active === 'birthday'" class="section-panel space-y-6">
+      <div class="panel">
+        <span class="round-title-num" x-text="$store.i18n.t('r1.num')"></span>
+        <h2 class="round-title" x-text="$store.i18n.t('r1.title')"></h2>
+        <p class="lead" x-html="$store.i18n.t('r1.lead')"></p>
+        <div class="mt-6 grid md:grid-cols-[1fr_auto] gap-6 items-end">
+          <label class="block max-w-md">
+            <span class="input-label"><span x-text="$store.i18n.t('r1.people')"></span> &middot; <span class="value" x-text="birthday.people"></span></span>
+            <input type="range" min="2" max="60" x-model.number="birthday.people" class="input-range" />
+          </label>
+          <label class="btn-cell"><span class="input-label">&nbsp;</span>
+            <button @click="runBirthday()" class="btn-primary" :disabled="loading">
+            <span x-text="results.birthday ? $store.i18n.t('common.rerun') : $store.i18n.t('r1.run')"></span>
+            </button></label>
+        </div>
+      </div>
+
+      <button class="preset-link" @click="preset('birthday')" x-text="$store.i18n.t('common.preset', {what: $store.i18n.t('r1.what')})"></button>
+      <p class="empty-state" x-show="!results.birthday">
+        <span class="mono" x-text="$store.i18n.t('common.before')"></span>
+        <strong x-text="$store.i18n.t('common.guess_first')"></strong>
+        <span x-html="$store.i18n.t('r1.empty')"></span></p>
+      <template x-if="results.birthday">
+        <div class="space-y-6">
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('stats.guess')"></div>
+              <div class="stat-value" style="color: var(--warn)" x-text="pct(results.birthday.guess)"></div></div>
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('stats.theory')"></div>
+              <div class="stat-value" style="color: var(--accent)" x-text="pct(results.birthday.theoretical)"></div></div>
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('stats.simulated')"></div>
+              <div class="stat-value" x-text="pct(results.birthday.simulated)"></div></div>
+          </div>
+          <div class="panel">
+            <h3 class="section-title" x-text="$store.i18n.t('r1.chart')"></h3>
+            <div class="chart-box"><canvas id="chart-birthday"></canvas></div>
+          </div>
+          <div class="formula-card" x-html="results.birthday.formula"></div>
+        </div>
+      </template>
+    </section>
+
+    <section x-show="active === 'monty'" class="section-panel space-y-6">
+      <div class="panel">
+        <span class="round-title-num" x-text="$store.i18n.t('r2.num')"></span>
+        <h2 class="round-title" x-text="$store.i18n.t('r2.title')"></h2>
+        <p class="lead" x-html="$store.i18n.t('r2.lead')"></p>
+        <div class="mt-6 grid md:grid-cols-[1fr_auto] gap-6 items-end">
+          <label class="block max-w-md">
+            <span class="input-label" x-text="$store.i18n.t('r2.trials')"></span>
+            <input type="number" min="100" max="200000" step="1000" x-model.number="monty.trials" class="input-number" />
+          </label>
+          <label class="btn-cell">
+            <span class="input-label">&nbsp;</span>
+            <button @click="runMonty()" class="btn-primary" :disabled="loading" x-text="$store.i18n.t('common.simulate')"></button>
+          </label>
+        </div>
+      </div>
+
+      <button class="preset-link" @click="preset('monty')" x-text="$store.i18n.t('common.preset', {what: $store.i18n.t('r2.what')})"></button>
+      <p class="empty-state" x-show="!results.monty">
+        <span class="mono" x-text="$store.i18n.t('common.before')"></span><strong x-text="$store.i18n.t('common.guess_first')"></strong>
+        <span x-text="$store.i18n.t('r2.empty')"></span></p>
+      <template x-if="results.monty">
+        <div class="space-y-6">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('r2.stay')"></div>
+              <div class="stat-value"><span class="tealish">33.3%</span> / <span
+              x-text="pct(results.monty.simulated.stay)"></span></div></div>
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('r2.switch')"></div>
+              <div class="stat-value"><span class="tealish">66.7%</span> / <span
+              x-text="pct(results.monty.simulated.switch)"></span></div></div>
+          </div>
+          <div class="panel">
+            <h3 class="section-title" x-text="$store.i18n.t('r2.chart')"></h3>
+            <div class="chart-box"><canvas id="chart-monty"></canvas></div>
+          </div>
+          <div class="formula-card" x-html="results.monty.formula"></div>
+        </div>
+      </template>
+    </section>
+
+    <section x-show="active === 'bayes'" class="section-panel space-y-6">
+      <div class="panel">
+        <span class="round-title-num" x-text="$store.i18n.t('r3.num')"></span>
+        <h2 class="round-title" x-text="$store.i18n.t('r3.title')"></h2>
+        <p class="lead" x-html="$store.i18n.t('r3.lead')"></p>
+        <div class="mt-6 grid md:grid-cols-[repeat(3,1fr)_auto] gap-4 items-end">
+          <label><span class="input-label" x-text="$store.i18n.t('r3.prevalence')"></span>
+            <input type="number" step="0.01" min="0.01" max="0.5" x-model.number="bayes.prevalence"
+            class="input-number" /></label>
+          <label><span class="input-label" x-text="$store.i18n.t('r3.sensitivity')"></span>
+            <input type="number" step="0.01" min="0.5" max="1" x-model.number="bayes.sensitivity" class="input-number" /></label>
+          <label><span class="input-label" x-text="$store.i18n.t('r3.false_pos')"></span>
+            <input type="number" step="0.01" min="0.01" max="0.5" x-model.number="bayes.false_positive_rate"
+            class="input-number" /></label>
+          <label class="btn-cell">
+            <span class="input-label">&nbsp;</span>
+            <button @click="runBayes()" class="btn-primary" :disabled="loading" x-text="$store.i18n.t('common.simulate')"></button>
+          </label>
+        </div>
+      </div>
+
+      <button class="preset-link" @click="preset('bayes')" x-text="$store.i18n.t('common.preset', {what: $store.i18n.t('r3.what')})"></button>
+      <p class="empty-state" x-show="!results.bayes">
+        <span class="mono" x-text="$store.i18n.t('common.before')"></span><strong x-text="$store.i18n.t('common.guess_first')"></strong>
+        <span x-text="$store.i18n.t('r3.empty')"></span></p>
+      <template x-if="results.bayes">
+        <div class="space-y-6">
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('stats.guess')"></div>
+              <div class="stat-value" style="color: var(--warn)" x-text="pct(results.bayes.guess)"></div></div>
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('r3.theory')"></div>
+              <div class="stat-value" style="color: var(--accent)" x-text="pct(results.bayes.theoretical)"></div></div>
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('stats.simulated')"></div>
+              <div class="stat-value" x-text="pct(results.bayes.simulated)"></div></div>
+          </div>
+
+          <div class="panel">
+            <h3 class="section-title" x-text="$store.i18n.t('r3.chart1')"></h3>
+            <div class="grid md:grid-cols-[220px_1fr] gap-8 items-start">
+              <div>
+                <div class="dot-legend"><span class="dot" style="background: #f43f5e"></span> <span x-text="$store.i18n.t('r3.legend1')"></span></div>
+                <div class="dot-legend"><span class="dot" style="background: #fbbf24"></span> <span x-text="$store.i18n.t('r3.legend2')"></span></div>
+                <div class="dot-legend"><span class="dot" style="background: #0ea5e9"></span> <span x-text="$store.i18n.t('r3.legend3')"></span></div>
+                <div class="dot-legend"><span class="dot" style="background: #475569"></span> <span x-text="$store.i18n.t('r3.legend4')"></span></div>
+              </div>
+              <div class="dot-grid" id="bayes-grid"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3 class="section-title" x-text="$store.i18n.t('r3.chart2')"></h3>
+            <div class="chart-box"><canvas id="chart-bayes"></canvas></div>
+          </div>
+          <div class="formula-card" x-html="results.bayes.formula"></div>
+        </div>
+      </template>
+    </section>
+
+    <section x-show="active === 'gambler'" class="section-panel space-y-6">
+      <div class="panel">
+        <span class="round-title-num" x-text="$store.i18n.t('r4.num')"></span>
+        <h2 class="round-title" x-text="$store.i18n.t('r4.title')"></h2>
+        <p class="lead" x-html="$store.i18n.t('r4.lead')"></p>
+        <div class="mt-6 grid md:grid-cols-[1fr_auto] gap-6 items-end">
+          <label class="block max-w-md">
+            <span class="input-label"><span x-text="$store.i18n.t('r4.streaks')"></span> &middot;
+            <span class="value" x-text="gambler.streaks"></span></span>
+            <input type="range" min="50" max="5000" step="50" x-model.number="gambler.streaks" class="input-range" />
+          </label>
+          <label class="btn-cell">
+            <span class="input-label">&nbsp;</span>
+            <button @click="runGambler()" class="btn-primary" :disabled="loading" x-text="$store.i18n.t('common.simulate')"></button>
+          </label>
+        </div>
+      </div>
+
+      <button class="preset-link" @click="preset('gambler')" x-text="$store.i18n.t('common.preset', {what: $store.i18n.t('r4.what')})"></button>
+      <p class="empty-state" x-show="!results.gambler">
+        <span class="mono" x-text="$store.i18n.t('common.before')"></span><strong x-text="$store.i18n.t('common.guess_first')"></strong>
+        <span x-text="$store.i18n.t('r4.empty')"></span></p>
+      <template x-if="results.gambler">
+        <div class="space-y-6">
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('stats.guess')"></div>
+              <div class="stat-value" style="color: var(--warn)" x-text="pct(results.gambler.guess)"></div></div>
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('r4.theory')"></div>
+              <div class="stat-value" style="color: var(--accent)">50%</div></div>
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('stats.simulated')"></div>
+              <div class="stat-value" x-text="pct(results.gambler.simulated)"></div></div>
+          </div>
+          <div class="panel">
+            <h3 class="section-title"
+              x-text="$store.i18n.t('r4.chart_pre', {flips: results.gambler.flips_used.toLocaleString($store.i18n.lang),
+              streaks: results.gambler.streaks_found.toLocaleString($store.i18n.lang)})"></h3>
+            <div class="chart-box"><canvas id="chart-gambler"></canvas></div>
+          </div>
+          <div class="formula-card" x-html="results.gambler.formula"></div>
+        </div>
+      </template>
+    </section>
+
+    <section x-show="active === 'clt'" class="section-panel space-y-6">
+      <div class="panel">
+        <span class="round-title-num" x-text="$store.i18n.t('r5.num')"></span>
+        <h2 class="round-title" x-text="$store.i18n.t('r5.title')"></h2>
+        <p class="lead" x-html="$store.i18n.t('r5.lead')"></p>
+        <div class="mt-6 grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end">
+          <label><span class="input-label" x-text="$store.i18n.t('r5.population')"></span>
+            <select x-model="clt.distribution" class="input-number">
+              <option value="uniform" x-text="$store.i18n.t('r5.pop_uniform')"></option>
+              <option value="exponential" x-text="$store.i18n.t('r5.pop_exponential')"></option>
+              <option value="bimodal" x-text="$store.i18n.t('r5.pop_bimodal')"></option>
+            </select></label>
+          <label><span class="input-label"><span x-text="$store.i18n.t('r5.sample_size')"></span> &middot;
+            <span class="value" x-text="clt.sample_size"></span></span>
+            <input type="range" min="1" max="100" x-model.number="clt.sample_size" class="input-range" /></label>
+          <label><span class="input-label" x-text="$store.i18n.t('r5.samples')"></span>
+            <input type="number" min="100" max="100000" step="1000" x-model.number="clt.samples" class="input-number" /></label>
+          <label class="btn-cell">
+            <span class="input-label">&nbsp;</span>
+            <button @click="runClt()" class="btn-primary" :disabled="loading" x-text="$store.i18n.t('common.simulate')"></button>
+          </label>
+        </div>
+      </div>
+
+      <button class="preset-link" @click="preset('clt')" x-text="$store.i18n.t('common.preset', {what: $store.i18n.t('r5.what')})"></button>
+      <p class="empty-state" x-show="!results.clt">
+        <span class="mono" x-text="$store.i18n.t('common.before')"></span><strong x-text="$store.i18n.t('common.bet')"></strong>
+        <span x-text="$store.i18n.t('r5.empty')"></span></p>
+      <template x-if="results.clt">
+        <div class="space-y-6">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('r5.label_mu')"></div>
+              <div class="stat-value"><span class="tealish" x-text="results.clt.theoretical.mu.toFixed(3)"></span> /
+              <span x-text="results.clt.empirical.mean.toFixed(3)"></span></div></div>
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('r5.label_se')"></div>
+              <div class="stat-value"><span class="tealish" x-text="results.clt.theoretical.se.toFixed(3)"></span> /
+              <span x-text="results.clt.empirical.std.toFixed(3)"></span></div></div>
+          </div>
+          <div class="panel">
+            <h3 class="section-title" x-text="$store.i18n.t('r5.chart')"></h3>
+            <div class="chart-box"><canvas id="chart-clt"></canvas></div>
+          </div>
+          <div class="formula-card" x-html="results.clt.formula"></div>
+        </div>
+      </template>
+    </section>
