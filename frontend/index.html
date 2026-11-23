@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quanty</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>" />
+  <link href="vendor/fonts.css?v=32" rel="stylesheet" />
+  <script src="vendor/tailwind.js?v=32"></script>
+  <script defer src="vendor/alpine.min.js?v=32"></script>
+  <script src="vendor/chart.umd.min.js?v=32"></script>
+  <link rel="stylesheet" href="css/styles.css?v=44" />
+  <link rel="stylesheet" href="css/components.css?v=34" />
+</head>
+<body x-data="app()" x-cloak>
+
+  <header class="site">
+    <div class="wrap heading-row">
+      <div class="site-heading">
+        <span class="eyebrow">Quanty</span>
+        <h1 x-html="$store.i18n.t('header.title')"></h1>
+        <p x-html="$store.i18n.t('header.quote')"></p>
+      </div>
+      <div class="heading-actions">
+        <button
+          @click="$store.i18n.toggle()"
+          class="btn-secondary"
+          title="English / Español">
+          <span :class="$store.i18n.lang === 'en' ? 'lang-active' : 'lang-idle'">EN</span>
+          <span class="lang-sep">/</span>
+          <span :class="$store.i18n.lang === 'es' ? 'lang-active' : 'lang-idle'">ES</span>
+        </button>
+        <button
+          @click="switchTab('score')"
+          class="btn-secondary score-btn"
+          :class="active === 'score' ? 'score-btn-active' : ''"
+          x-text="$store.i18n.t('header.score')">
+        </button>
+      </div>
+    </div>
+    <div class="wrap">
+      <nav class="tabs">
+        <template x-for="tab in tabs.filter(t => t.id !== 'score')" :key="tab.id">
+          <button
+            @click="switchTab(tab.id)"
+            class="tab"
+            :class="active === tab.id ? 'active' : ''"
+            x-text="$store.i18n.t('tabs.' + tab.id)">
+          </button>
+        </template>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- @ROUNDS@ -->
+  </main>
+
+  <footer class="site">
+    <p x-text="$store.i18n.t('footer')"></p>
+  </footer>
+
+  <div class="modal-backdrop" x-show="modal.open" x-cloak=""
+       @keydown.escape.window="cancelGuess()"
+       style="display: none;">
+    <div class="modal" @click.outside="cancelGuess()">
+      <span class="eyebrow" x-text="$store.i18n.t('modal.eyebrow')"></span>
+      <h3 x-text="modal.title"></h3>
+      <p x-text="modal.sub"></p>
+      <label>
+        <span class="input-label" x-text="$store.i18n.t('modal.answer')"></span>
+        <input id="modal-input" type="number" min="0" max="100" step="0.1"
+               x-model.number="modal.value" @keydown.enter="submitGuess()" class="input-number" />
+      </label>
+      <div class="modal-actions">
+        <button class="btn-secondary" @click="cancelGuess()" x-text="$store.i18n.t('modal.cancel')"></button>
+        <button class="btn-primary" @click="submitGuess()" x-text="$store.i18n.t('modal.submit')"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/locales/es.js?v=34"></script>
+  <script src="js/locales/en.js?v=34"></script>
+  <script src="js/i18n.js?v=33"></script>
+  <script src="js/common.js?v=33"></script>
+  <script src="js/rounds-probability.js?v=33"></script>
+  <script src="js/rounds-statistics.js?v=33"></script>
+  <script src="js/app.js?v=33"></script>
+</body>
+</html>
