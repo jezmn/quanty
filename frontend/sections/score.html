@@ -1,0 +1,36 @@
+    <section x-show="active === 'score'" class="section-panel">
+      <div class="panel">
+        <span class="round-title-num" x-text="$store.i18n.t('score.num')"></span>
+        <h2 class="round-title" x-text="$store.i18n.t('score.title')"></h2>
+        <p class="lead" x-text="$store.i18n.t('score.lead')"></p>
+        <table class="score" x-show="scoreRows().length">
+          <thead>
+            <tr>
+              <th x-text="$store.i18n.t('score.round')"></th>
+              <th x-text="$store.i18n.t('score.guess_col')"></th>
+              <th x-text="$store.i18n.t('score.real')"></th>
+              <th x-text="$store.i18n.t('score.error')"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-for="row in scoreRows()" :key="row.round">
+              <tr>
+                <td x-text="$store.i18n.t(row.round)"></td>
+                <td x-text="pct(row.guess)"></td>
+                <td x-text="pct(row.real)"></td>
+                <td class="font-mono" x-text="row.error.toFixed(1) + ' pp'"></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+        <template x-if="score() !== null">
+          <div>
+            <div class="final-score" x-text="score().toFixed(0) + ' / 100'"></div>
+            <p class="verdict" x-text="verdict()"></p>
+          </div>
+        </template>
+        <p x-show="!scoreRows().length" class="lead mt-4" x-text="$store.i18n.t('score.empty')"></p>
+      </div>
+    </section>
+
+    <div x-show="loading" class="toast" x-text="$store.i18n.t('toast')"></div>

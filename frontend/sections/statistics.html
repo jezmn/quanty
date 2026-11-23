@@ -1,0 +1,140 @@
+    <section x-show="active === 'frequencies'" class="section-panel space-y-6">
+      <div class="panel">
+        <span class="round-title-num" x-text="$store.i18n.t('r6.num')"></span>
+        <h2 class="round-title" x-text="$store.i18n.t('r6.title')"></h2>
+        <p class="lead" x-html="$store.i18n.t('r6.lead')"></p>
+        <div class="mt-6 grid md:grid-cols-[1fr_auto] gap-6 items-end">
+          <label class="block max-w-xl">
+            <span class="input-label" x-text="$store.i18n.t('r6.data')"></span>
+            <textarea x-model="freq.raw" rows="3" class="input-number w-full font-mono"></textarea>
+          </label>
+          <label class="btn-cell">
+            <span class="input-label">&nbsp;</span>
+            <button @click="runFrequencies()" class="btn-primary" :disabled="loading" x-text="$store.i18n.t('r6.build')"></button>
+          </label>
+        </div>
+        <p class="lead mt-2" style="color: var(--warn)" x-show="freq.error" x-text="freq.error"></p>
+      </div>
+
+      <button class="preset-link" @click="preset('frequencies')" x-text="$store.i18n.t('common.preset', {what: $store.i18n.t('r6.what')})"></button>
+      <p class="empty-state" x-show="!results.frequencies">
+        <span class="mono" x-text="$store.i18n.t('common.before')"></span>
+        <span x-html="$store.i18n.t('r6.empty')"></span></p>
+      <template x-if="results.frequencies">
+        <div class="space-y-6">
+          <div class="panel">
+            <h3 class="section-title" x-text="$store.i18n.t('r6.chart1')"></h3>
+            <table class="score">
+              <thead><tr><th x-text="$store.i18n.t('r6.th_interval')"></th><th x-html="$store.i18n.t('r6.th_mark')"></th><th>f</th><th>F</th><th>fr</th><th>%</th></tr></thead>
+              <tbody>
+                <template x-for="(row, i) in results.frequencies.table" :key="i">
+                  <tr>
+                    <td class="font-mono" x-text="`${row.lower.toFixed(2)} - ${row.upper.toFixed(2)}`"></td>
+                    <td class="font-mono" x-text="row.center.toFixed(2)"></td>
+                    <td x-text="row.frequency"></td>
+                    <td x-text="row.cumulative"></td>
+                    <td x-text="row.relative.toFixed(3)"></td>
+                    <td x-text="row.percent.toFixed(1) + '%'"></td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+          <div class="panel">
+            <h3 class="section-title" x-text="$store.i18n.t('r6.chart2')"></h3>
+            <div class="chart-box"><canvas id="chart-frequencies"></canvas></div>
+          </div>
+          <div class="formula-card" x-html="results.frequencies.formula"></div>
+        </div>
+      </template>
+    </section>
+
+    <section x-show="active === 'regression'" class="section-panel space-y-6">
+      <div class="panel">
+        <span class="round-title-num" x-text="$store.i18n.t('r7.num')"></span>
+        <h2 class="round-title" x-text="$store.i18n.t('r7.title')"></h2>
+        <p class="lead" x-html="$store.i18n.t('r7.lead')"></p>
+        <div class="mt-6 grid md:grid-cols-[1fr_1fr_140px_auto] gap-4 items-end">
+          <label><span class="input-label" x-text="$store.i18n.t('r7.x_data')"></span>
+            <textarea x-model="reg.xRaw" rows="2" class="input-number w-full font-mono" style="min-width: 180px"></textarea>
+          </label>
+          <label><span class="input-label" x-text="$store.i18n.t('r7.y_data')"></span>
+            <textarea x-model="reg.yRaw" rows="2" class="input-number w-full font-mono" style="min-width: 180px"></textarea>
+          </label>
+          <label><span class="input-label" x-html="$store.i18n.t('r7.x0')"></span>
+            <input type="number" step="0.1" x-model.number="reg.x0" class="input-number w-full" /></label>
+          <label class="btn-cell">
+            <span class="input-label">&nbsp;</span>
+            <button @click="runRegression()" class="btn-primary" :disabled="loading" x-text="$store.i18n.t('r7.fit')"></button>
+          </label>
+        </div>
+        <p class="lead mt-2" style="color: var(--warn)" x-show="reg.error" x-text="reg.error"></p>
+      </div>
+
+      <button class="preset-link" @click="preset('regression')" x-text="$store.i18n.t('common.preset', {what: $store.i18n.t('r7.what')})"></button>
+      <p class="empty-state" x-show="!results.regression">
+        <span class="mono" x-text="$store.i18n.t('common.before')"></span>
+        <span x-html="$store.i18n.t('r7.empty')"></span></p>
+      <template x-if="results.regression">
+        <div class="space-y-6">
+          <div class="panel">
+            <h3 class="section-title" x-text="$store.i18n.t('r7.chart1')"></h3>
+            <div class="chart-box"><canvas id="chart-regression"></canvas></div>
+          </div>
+          <div class="panel">
+            <h3 class="section-title" x-text="$store.i18n.t('r7.chart2')"></h3>
+            <div class="chart-box"><canvas id="chart-residuals"></canvas></div>
+          </div>
+          <div class="formula-card" x-html="results.regression.formula"></div>
+        </div>
+      </template>
+    </section>
+
+    <section x-show="active === 'confidence'" class="section-panel space-y-6">
+      <div class="panel">
+        <span class="round-title-num" x-text="$store.i18n.t('r8.num')"></span>
+        <h2 class="round-title" x-text="$store.i18n.t('r8.title')"></h2>
+        <p class="lead" x-html="$store.i18n.t('r8.lead')"></p>
+        <div class="mt-6 grid md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end">
+          <label><span class="input-label" x-text="$store.i18n.t('r8.hits')"></span>
+            <input type="number" min="1" x-model.number="confidence.hits" class="input-number w-full" /></label>
+          <label><span class="input-label" x-text="$store.i18n.t('r8.total')"></span>
+            <input type="number" min="10" x-model.number="confidence.total" class="input-number w-full" /></label>
+          <label><span class="input-label" x-text="$store.i18n.t('r8.level')"></span>
+            <select x-model.number="confidence.level" class="input-number w-full">
+              <option :value="0.90">90%</option>
+              <option :value="0.95">95%</option>
+              <option :value="0.99">99%</option>
+            </select></label>
+          <label class="btn-cell">
+            <span class="input-label">&nbsp;</span>
+            <button @click="runConfidence()" class="btn-primary" :disabled="loading" x-text="$store.i18n.t('r8.compute')"></button>
+          </label>
+        </div>
+      </div>
+
+      <button class="preset-link" @click="preset('confidence')" x-text="$store.i18n.t('common.preset', {what: $store.i18n.t('r8.what')})"></button>
+      <p class="empty-state" x-show="!results.confidence">
+        <span class="mono" x-text="$store.i18n.t('common.before')"></span>
+        <strong x-text="$store.i18n.t('common.guess_first')"></strong>
+        <span x-html="$store.i18n.t('r8.empty')"></span></p>
+      <template x-if="results.confidence">
+        <div class="space-y-6">
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('r8.label_p')"></div>
+              <div class="stat-value" style="color: var(--warn)" x-text="pct(results.confidence.guess)"></div></div>
+            <div class="stat"><div class="stat-label" x-html="$store.i18n.t('r8.label_ic')"></div>
+              <div class="stat-value" style="color: var(--accent)"
+                   x-text="`${pct(results.confidence.interval.p_hat)} [${pct(results.confidence.interval.lower)}
+                   - ${pct(results.confidence.interval.upper)}]`"></div></div>
+            <div class="stat"><div class="stat-label" x-text="$store.i18n.t('r8.label_cov')"></div>
+              <div class="stat-value" x-text="pct(results.confidence.coverage.coverage)"></div></div>
+          </div>
+          <div class="panel">
+            <h3 class="section-title" x-text="$store.i18n.t('r8.chart')"></h3>
+            <div class="chart-box"><canvas id="chart-confidence"></canvas></div>
+          </div>
+          <div class="formula-card" x-html="results.confidence.formula"></div>
+        </div>
+      </template>
+    </section>
