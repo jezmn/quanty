@@ -18,6 +18,7 @@ function renderChart(id, config) {
   if (charts[id]) charts[id].destroy();
   const canvas = document.getElementById(id);
   if (!canvas) return;
+  config.options = { responsive: true, maintainAspectRatio: false, ...config.options };
   charts[id] = new Chart(canvas, config);
 }
 
