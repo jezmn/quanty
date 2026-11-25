@@ -46,18 +46,4 @@ table.score td { border-bottom: 1px solid var(--hairline-soft); padding: 10px 12
 .final-score { font-size: 3rem; font-weight: 700; color: var(--accent); text-align: center; margin-top: 28px; }
 .verdict { text-align: center; color: var(--ink-2); margin-top: 10px; font-size: 1.05rem; }
 
-.toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--hairline);
-  color: var(--ink);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.05em;
-  padding: 12px 22px;
-  clip-path: var(--chamfer);
-}
-
 @media (max-width: 640px) {

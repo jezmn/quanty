@@ -25,7 +25,6 @@ window.I18N_EN = {
     sub: 'Your number goes first. Being wrong here is part of the experiment (0-100 %).',
     cancel: 'Cancel', submit: 'Guess',
   },
-  toast: 'simulating · the law of large numbers requires a minimum of patience',
   stats: { guess: 'Your guess', theory: 'Theoretical value', simulated: 'Simulated' },
   score: {
     num: 'Result', title: 'Your calibration score',

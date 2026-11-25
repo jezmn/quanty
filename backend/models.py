@@ -38,6 +38,7 @@ class FrequenciesInput(BaseModel):
 class RegressionInput(BaseModel):
     x: list[float] = Field(..., min_length=4, max_length=5_000)
     y: list[float] = Field(..., min_length=4, max_length=5_000)
+    x0: float | None = Field(None, description="Optional x value to predict")
     x0: float | None = Field(None, ge=-1_000_000, le=1_000_000,
                              description="point to predict at")
 

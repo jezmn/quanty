@@ -25,7 +25,6 @@ window.I18N_ES = {
     sub: 'Tu número va primero. Errar aquí es parte del experimento (0-100 %).',
     cancel: 'Cancelar', submit: 'Adivinar',
   },
-  toast: 'simulando · la ley de los grandes números requiere paciencia mínima',
   stats: { guess: 'Tu estimación', theory: 'Valor teórico', simulated: 'Simulado' },
   score: {
     num: 'Resultado', title: 'Tu puntaje de calibración',

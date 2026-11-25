@@ -10,6 +10,7 @@ const CHART_COLORS = {
 Chart.defaults.color = CHART_COLORS.muted;
 Chart.defaults.borderColor = CHART_COLORS.grid;
 Chart.defaults.font.family = "'Archivo', system-ui, sans-serif";
+Chart.defaults.maintainAspectRatio = false;
 
 const charts = {};
 

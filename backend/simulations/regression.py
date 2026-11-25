@@ -56,6 +56,7 @@ def simulate(x: list[float], y: list[float]) -> dict:
         "best": best,
         "n": len(x),
         "scatter": {"x": [float(v) for v in x], "y": [float(v) for v in y]},
+        "residuals": {"x": [float(v) for v in x], "y": linear["residuals"]},
         "curves": {
             "linear": {"x": xs.tolist(), "y": [_eval(linear["coefficients"], v) for v in xs]},
             "quadratic": {"x": xs.tolist(), "y": [_eval(quadratic["coefficients"], v) for v in xs]},
