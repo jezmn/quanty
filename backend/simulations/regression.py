@@ -50,13 +50,14 @@ def simulate(x: list[float], y: list[float]) -> dict:
     linear = fit(x, y, degree=1)
     quadratic = fit(x, y, degree=2)
     best = "quadratic" if quadratic["press"] < linear["press"] else "linear"
+    best_model = quadratic if best == "quadratic" else linear
     xs = np.linspace(min(x), max(x), 100)
     return {
         "models": {"linear": linear, "quadratic": quadratic},
         "best": best,
         "n": len(x),
         "scatter": {"x": [float(v) for v in x], "y": [float(v) for v in y]},
-        "residuals": {"x": [float(v) for v in x], "y": linear["residuals"]},
+        "residuals": {"x": [float(v) for v in x], "y": best_model["residuals"]},
         "curves": {
             "linear": {"x": xs.tolist(), "y": [_eval(linear["coefficients"], v) for v in xs]},
             "quadratic": {"x": xs.tolist(), "y": [_eval(quadratic["coefficients"], v) for v in xs]},
