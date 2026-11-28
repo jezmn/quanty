@@ -14,25 +14,32 @@ window.probRounds = () => ({
       renderChart('chart-birthday', {
         type: 'line',
         data: {
-          datasets: [
-            {
-              label: window.t('f.b1.lbl_theory'),
-              data: r.theoretical_curve.map(p => ({ x: p.n, y: p.p * 100 })),
-              borderColor: CHART_COLORS.accent, pointRadius: 0, tension: 0.2,
-            },
-            {
-              label: window.t('f.b1.lbl_sim'),
-              data: r.convergence.map(p => ({ x: p.trial, y: p.estimate * 100 })),
-              borderColor: CHART_COLORS.warn, pointRadius: 0,
-            },
-          ],
+          datasets: [{
+            label: window.t('f.b1.lbl_theory'),
+            data: r.theoretical_curve.map(p => ({ x: p.n, y: p.p * 100 })),
+            borderColor: CHART_COLORS.accent, pointRadius: 0, tension: 0.2,
+          }],
         },
         options: {
           scales: {
-            x: {
-              type: 'logarithmic',
-              title: { display: true, text: window.t('f.b1.ax_x') },
-            },
+            x: { type: 'linear', title: { display: true, text: window.t('f.b1.ax_x') } },
+            y: { title: { display: true, text: window.t('f.b1.ax_y') } },
+          },
+          plugins: { tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.parsed.y.toFixed(2)}%` } } },
+        },
+      });
+      renderChart('chart-birthday-conv', {
+        type: 'line',
+        data: {
+          datasets: [{
+            label: window.t('f.b1.lbl_sim'),
+            data: r.convergence.map(p => ({ x: p.trial, y: p.estimate * 100 })),
+            borderColor: CHART_COLORS.lavender, pointRadius: 0,
+          }],
+        },
+        options: {
+          scales: {
+            x: { type: 'linear', title: { display: true, text: window.t('f.b1.ax_x_sim') } },
             y: { title: { display: true, text: window.t('f.b1.ax_y') } },
           },
           plugins: { tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.parsed.y.toFixed(2)}%` } } },
@@ -76,7 +83,7 @@ window.probRounds = () => ({
         },
         options: {
           scales: {
-            x: { title: { display: true, text: window.t('f.m2.ax_x') } },
+            x: { type: 'linear', title: { display: true, text: window.t('f.m2.ax_x') } },
             y: { title: { display: true, text: window.t('f.m2.ax_y') } },
           },
         },
@@ -113,7 +120,7 @@ window.probRounds = () => ({
         },
         options: {
           scales: {
-            x: { title: { display: true, text: window.t('f.b3.ax_x') } },
+            x: { type: 'linear', title: { display: true, text: window.t('f.b3.ax_x') } },
             y: { title: { display: true, text: window.t('f.b3.ax_y') } },
           },
         },
@@ -171,7 +178,7 @@ window.probRounds = () => ({
             refLine(1, Math.max(r.convergence.length, 2), 50, window.t('f.g4.ref')),
           ],
         },
-        options: { scales: { y: { title: { display: true, text: window.t('f.g4.ax_y') } } } },
+        options: { scales: { x: { type: 'linear' }, y: { title: { display: true, text: window.t('f.g4.ax_y') } } } },
       });
       this.results.gambler.formula =
         `${window.t('f.g4.indep')}\n\n`
