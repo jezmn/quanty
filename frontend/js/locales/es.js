@@ -5,7 +5,7 @@ window.I18N_ES = {
     before: 'Antes de calcular',
     guess_first: 'Adivina primero.',
     bet: 'Apuesta tu intuición.',
-    preset: 'datos precargados ({what})',
+    preset: 'Cargar ejemplo ({what})',
     error_alert: 'Error en la simulación: {msg}',
   },
   header: {
@@ -43,7 +43,8 @@ window.I18N_ES = {
     people: 'Personas en el grupo', run: 'Estimar y simular',
     what: 'n = 23',
     empty: 'Pista: la mayoría piensa en algo como 10 %, pero con solo 23 personas ya supera el 50 %. Elige el N y pulsa <em>Estimar y simular</em>: tu número contra la fórmula exacta y una simulación Monte Carlo.',
-    chart: 'P(n) teórica vs. convergencia de la simulación',
+    chart_theory: 'Teoría P(n) · tamaño del grupo',
+    chart_sim: 'Simulación · frecuencia acumulada',
     q: '¿Qué probabilidad (%) de que en un grupo de {n} personas 2 cumplan el mismo día?',
   },
   r2: {
@@ -130,7 +131,7 @@ window.I18N_ES.f = {
     diff: '(diferencia {d} pp)',
     lln: 'Cuantas más simulaciones, más se acerca la frecuencia al valor teórico (ley de los grandes números).',
     lbl_theory: 'Teoría P(n)', lbl_sim: 'Simulación (frecuencia acumulada)',
-    ax_x: 'Personas (curva) / simulaciones (convergencia), escala log', ax_y: 'Probabilidad (%)',
+    ax_x: 'Personas en el grupo', ax_x_sim: 'Simulaciones acumuladas', ax_y: 'Probabilidad (%)',
   },
   m2: {
     t1: 'Árbol: <code>P(premio en tu puerta) = 1/3</code> → si te quedas, ganas con 1/3',
@@ -144,7 +145,7 @@ window.I18N_ES.f = {
     formula: '<code>P(Enfermo|+) = P(+|E)·P(E) / [P(+|E)·P(E) + P(+|S)·P(S)]</code>',
     sim: '<strong>Población simulada:</strong> {a} enfermos con positivo vs {b} sanos con positivo (falsos).',
     key: 'La clave: la población sana es enorme, así que sus pocos errores son MUCHOS falsos positivos.',
-    lbl: 'P(Enfermo | positivo) simulado', ax_x: 'Positivos acumulados', ax_y: 'Posterior (%)',
+    lbl: 'P(Enfermo | positivo) simulado', ax_x: 'Personas simuladas', ax_y: 'Posterior (%)',
   },
   g4: {
     indep: 'Los tiros son independientes: los que vienen no dependen de los que pasaron. <code>P(cara) = 1/2 = 50%</code>, siempre.',

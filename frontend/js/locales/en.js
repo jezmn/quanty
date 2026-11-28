@@ -5,7 +5,7 @@ window.I18N_EN = {
     before: 'Before calculating',
     guess_first: 'Guess first.',
     bet: 'Bet your intuition.',
-    preset: 'preset data ({what})',
+    preset: 'Load example ({what})',
     error_alert: 'Simulation error: {msg}',
   },
   header: {
@@ -43,7 +43,8 @@ window.I18N_EN = {
     people: 'People in the group', run: 'Estimate and simulate',
     what: 'n = 23',
     empty: 'Hint: most people think of something like 10 %, but with just 23 people it already exceeds 50 %. Pick N and press <em>Estimate and simulate</em>: your number against the exact formula and a Monte Carlo simulation.',
-    chart: 'Theoretical P(n) vs. simulation convergence',
+    chart_theory: 'Theory P(n) · group size',
+    chart_sim: 'Simulation · cumulative frequency',
     q: 'What is the probability (%) that in a group of {n} people 2 share a birthday?',
   },
   r2: {
@@ -130,7 +131,7 @@ window.I18N_EN.f = {
     diff: '(difference {d} pp)',
     lln: 'The more simulations, the closer the frequency gets to the theoretical value (law of large numbers).',
     lbl_theory: 'Theory P(n)', lbl_sim: 'Simulation (cumulative frequency)',
-    ax_x: 'People (curve) / simulations (convergence), log scale', ax_y: 'Probability (%)',
+    ax_x: 'People in the group', ax_x_sim: 'Simulations so far', ax_y: 'Probability (%)',
   },
   m2: {
     t1: 'Tree: <code>P(prize on your door) = 1/3</code> → if you stay, you win with 1/3',
@@ -144,7 +145,7 @@ window.I18N_EN.f = {
     formula: '<code>P(Sick|+) = P(+|S)·P(S) / [P(+|S)·P(S) + P(+|H)·P(H)]</code>',
     sim: '<strong>Simulated population:</strong> {a} sick with positive vs {b} healthy with positive (false positives).',
     key: 'The key: the healthy population is huge, so its few mistakes are MANY false positives.',
-    lbl: 'Simulated P(Sick | positive)', ax_x: 'Cumulative positives', ax_y: 'Posterior (%)',
+    lbl: 'Simulated P(Sick | positive)', ax_x: 'Simulated people', ax_y: 'Posterior (%)',
   },
   g4: {
     indep: 'Flips are independent: upcoming flips do not depend on past ones. <code>P(heads) = 1/2 = 50%</code>, every time.',
