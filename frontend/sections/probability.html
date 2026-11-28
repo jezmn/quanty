@@ -32,8 +32,12 @@
               <div class="stat-value" x-text="pct(results.birthday.simulated)"></div></div>
           </div>
           <div class="panel">
-            <h3 class="section-title" x-text="$store.i18n.t('r1.chart')"></h3>
+            <h3 class="section-title" x-text="$store.i18n.t('r1.chart_theory')"></h3>
             <div class="chart-box"><canvas id="chart-birthday"></canvas></div>
+          </div>
+          <div class="panel">
+            <h3 class="section-title" x-text="$store.i18n.t('r1.chart_sim')"></h3>
+            <div class="chart-box"><canvas id="chart-birthday-conv"></canvas></div>
           </div>
           <div class="formula-card" x-html="results.birthday.formula"></div>
         </div>
