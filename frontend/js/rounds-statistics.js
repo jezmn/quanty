@@ -60,7 +60,7 @@ window.statRounds = () => ({
         this.reg.error = window.t('r7.err'); return;
       }
       this.reg.error = '';
-      const r = await postJSON('regression', { x, y, x0: this.reg.x0 || null });
+      const r = await postJSON('regression', { x, y, x0: this.reg.x0 === '' ? null : this.reg.x0 });
       this.results.regression = r;
       await domTick();
       const lin = r.models.linear, quad = r.models.quadratic;
@@ -98,7 +98,7 @@ window.statRounds = () => ({
             }, refLine(r.scatter.x[0], r.scatter.x.at(-1), 0, 'residual = 0'),
           ],
         },
-        options: { scales: { x: { title: { display: true, text: 'x' } }, y: { title: { display: true, text: window.t('f.r7.ax_res') } } } },
+        options: { scales: { x: { type: 'linear', title: { display: true, text: 'x' } }, y: { title: { display: true, text: window.t('f.r7.ax_res') } } } },
       });
       const coefs = (m) =>
         m.coefficients
@@ -132,7 +132,7 @@ window.statRounds = () => ({
         hits: this.confidence.hits, total: this.confidence.total,
         confidence: this.confidence.level,
       });
-      this.results.confidence = r;
+      this.results.confidence = { ...this.results.confidence, ...r };
       await domTick();
       const ic = r.interval, cov = r.coverage;
       renderChart('chart-confidence', {
@@ -154,7 +154,7 @@ window.statRounds = () => ({
         },
         options: {
           scales: {
-            x: { title: { display: true, text: window.t('f.c8.ax_x') } },
+            x: { type: 'linear', title: { display: true, text: window.t('f.c8.ax_x') } },
             y: { title: { display: true, text: window.t('f.c8.ax_y') } },
           },
         },
@@ -162,7 +162,7 @@ window.statRounds = () => ({
       this.results.confidence.formula =
         `${window.t('f.c8.phat', { h: this.confidence.hits, t: this.confidence.total, p: ic.p_hat.toFixed(3) })}\n`
         + `${window.t('f.c8.se', { se: ic.se.toFixed(4) })}\n`
-        + `${window.t('f.c8.ci', { lvl: Math.round(ic.confidence * 100) })}% =\n`
+        + `${window.t('f.c8.ci', { lvl: Math.round(ic.confidence * 100) })} =\n`
         + ` <code>p̂ ± z·EE = ${ic.p_hat.toFixed(3)} ± ${ic.z}·${ic.se.toFixed(4)}</code>\n`
         + ` → <code>[${(ic.lower * 100).toFixed(2)}%, ${(ic.upper * 100).toFixed(2)}%]</code>`
         + window.t('f.c8.margin', { m: this.pct(ic.margin) }) + '\n\n'
